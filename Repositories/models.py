@@ -8,20 +8,41 @@ Base = declarative_base()
 Movie_Genre = Table("Movie_Genre",
                     Base.metadata,
                     Column("Movie_Id", Integer, ForeignKey("Movie.Id"), primary_key=True),
-                    Column("Genre_id", Integer, ForeignKey("Genre.Id"), primary_key=True)
+                    Column("Genre_Id", Integer, ForeignKey("Genre.Id"), primary_key=True)
                     )
 
 Movie_Country = Table("Movie_Country",
                       Base.metadata,
                       Column("Movie_Id", Integer, ForeignKey("Movie.Id"), primary_key=True),
-                      Column("Country_id", Integer, ForeignKey("Country.Id"), primary_key=True)
+                      Column("Country_Id", Integer, ForeignKey("Country.Id"), primary_key=True)
                       )
 
-Rate = Table("Rate",
-             Base.metadata,
-             Column("Movie_Id", Integer, ForeignKey("Movie.Id"), primary_key=True),
-            Column("User_id", Integer, ForeignKey("User.Id"), primary_key=True),
-             Column("Score", Integer))
+
+# Tabela asocjacyjna z polem:
+
+class MoviePerson(Base):
+    __tablename__ = "Movie_Person"
+
+    Movie_Id = Column(Integer, ForeignKey("Movie.Id"), primary_key=True)
+    Person_id = Column(Integer, ForeignKey("Person.Id"), primary_key=True)
+    Role_id = Column(Integer, ForeignKey("Role.Id"))
+
+    Movie = relationship("Movie", back_populates="MoviePersons")
+    Person = relationship("Person", back_populates="MoviePersons")
+    Role = relationship("Role", back_populates="MoviePersons")
+
+
+class Rate(Base):
+    __tablename__ = "Rate"
+
+    Movie_Id = Column(Integer, ForeignKey("Movie.Id"), primary_key=True)
+    User_Id = Column(Integer, ForeignKey("User.Id"), primary_key=True)
+    Score = Column(Integer)
+
+    Movie = relationship("Movie", back_populates="Rate")
+    User = relationship("User", back_populates="Rate")
+
+
 
 # Tabele
 
@@ -31,7 +52,7 @@ class User(Base):
     Login = Column(String(50))
     Password = Column(String(50))
 
-    Movies = relationship("Movie", secondary=Rate, back_populates="Users")
+    Rates = relationship("Rate", back_populates="User")
 
 
 class Movie(Base):
@@ -42,10 +63,8 @@ class Movie(Base):
 
     Genres = relationship("Genre", secondary=Movie_Genre, back_populates="Movies")
     Countries = relationship("Country", secondary=Movie_Country, back_populates="Movies")
-    Users = relationship("User", secondary=Rate, back_populates="Movies")
 
-    MoviePersons = relationship("MoviePerson", back_populates="Movie")
-
+    Rates = relationship("Rate", back_populates="Movie")
 
 class Genre(Base):
     __tablename__ = "Genre"
@@ -78,19 +97,3 @@ class Role(Base):
     Name = Column(String(50))
 
     MoviePersons = relationship("MoviePerson", back_populates="Role")
-
-
-# Tabela asocjacyjna z polem:
-
-class MoviePerson(Base):
-    __tablename__ = "Movie_Person"
-
-    Movie_Id = Column(Integer, ForeignKey("Movie.Id"), primary_key=True)
-    Person_id = Column(Integer, ForeignKey("Person.Id"), primary_key=True)
-    Role_id = Column(Integer, ForeignKey("Role.Id"))
-
-    Movie = relationship("Movie", back_populates="MoviePersons")
-    Person = relationship("Person", back_populates="MoviePersons")
-    Role = relationship("Role", back_populates="MoviePersons")
-
-

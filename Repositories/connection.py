@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
+
 
 class DatabaseManager:
     def __init__(self, connection_string:str):
@@ -9,5 +10,5 @@ class DatabaseManager:
             autoflush=True,
             autocommit=False)
 
-    def get_session(self):
+    def get_session(self) -> Session:
         return self._session_factory()
