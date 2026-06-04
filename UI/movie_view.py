@@ -14,36 +14,38 @@ class MovieView(ctk.CTk):
         self.resizable(True, True)
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("dark-blue")
-        self.label = ctk.CTkLabel(self, text="Filmy", font=ctk.CTkFont(family="Roboto", size=25, weight="bold"))
+
+        self.label = ctk.CTkLabel(self, text="Filmy", font=ctk.CTkFont(family="Roboto", size=20, weight="bold"))
         self.label.pack(pady=20)
 
         self.scrollable_frame = ctk.CTkFrame(self, width=600, height=400)
         self.scrollable_frame.pack(pady=10, padx=20, fill="both", expand=True)
         self.scrollable_frame.grid_columnconfigure((0, 1, 2, 3), weight=1, pad=20)
 
+
+        self.recommendation_label = ctk.CTkLabel(self, text="Rekomendowane", font=ctk.CTkFont(family="Roboto", size=20, weight="bold"))
+        self.recommendation_label.pack(pady=20)
+
+        self.scrollable_bottom_frame = ctk.CTkFrame(self, width=600, height=300, orientation= "horizontal")
+        self.scrollable_bottom_frame.pack(pady=10, padx=20, fill="both", expand=False)
+
+
         self.display_movies()
+        self.display_recommended_movies()
 
     def display_movies(self):
-        data = self.controller.get_data()
-        #movies = data["filmy"]
+        movies = self.controller.get_data()
 
-        # 1. Zabezpieczenie: Jeśli data jest None, przypisz pusty słownik
-        if data is None:
-            data = {"filmy": []}
+        if movies is None:
+            movies = []
 
-        # 2. Bezpieczne pobranie listy (jeśli klucza nie ma, .get() da pustą listę [])
-        movies = data.get("filmy", [])
-
-        # 3. Jeśli lista filmów jest pusta, wyświetlamy ładny komunikat w UI
-        if not movies:
-            no_movies_label = ctk.CTkLabel(
+        if len(movies) == 0:
+            empty_label = ctk.CTkLabel(
                 self.scrollable_frame,
-                text="Brak filmów w bazie danych. Dodaj jakieś pozycje!",
-                font=ctk.CTkFont(family="Roboto", size=16)
+                text="Brak filmów w bazie",
+                font=ctk.CTkFont(family="Roboto", size=15)
             )
-            no_movies_label.pack(pady=50)
-            return  # Przerywamy wykonywanie metody, nie ma po czym iterować
-
+            empty_label.pack(pady=50)
 
         for i, movie in enumerate(movies):
             row = i//4
@@ -52,6 +54,24 @@ class MovieView(ctk.CTk):
             tile = Tile(self.scrollable_frame, movie, on_click=self.on_select_tile)
 
             tile.grid(row=row, column=col, padx=15, pady=15, sticky="nsew")
+
+    def display_recommended_movies(self):
+        movies = self.controller.get_recommended_movies()
+
+        if movies is None:
+            movies = []
+
+        if len(movies) == 0:
+            empty_label = ctk.CTkLabel(
+                self.scrollable_frame,
+                text="Brak filmów w bazie",
+                font=ctk.CTkFont(family="Roboto", size=15)
+            )
+            empty_label.pack(pady=50)
+
+        for movie in movies:
+            tile = Tile(self.scrollable_bottom_frame, movie, on_click=self.on_select_tile)
+            tile.pack(side="left", padx=10, pady=5)
 
     def on_select_tile(self, movie : Movie):
         print(f"Kliknięto {movie.Title}")

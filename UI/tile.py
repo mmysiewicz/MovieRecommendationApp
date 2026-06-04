@@ -23,7 +23,7 @@ class Tile(ctk.CTkFrame):
         if self.movie.poster_path is not None and os.path.exists(self.movie.poster_path):
             try:
                 image = Image.open(self.movie.poster_path)
-                ctkinter = ctk.CTkImage(light_image=image, dark_image=image, size=(300, 200))
+                ctkinter = ctk.CTkImage(light_image=image, dark_image=image, size=(200, 300))
 
                 self.widget = ctk.CTkLabel(self, image=ctkinter, text="")
                 self.widget.pack(pady=10, padx=10)

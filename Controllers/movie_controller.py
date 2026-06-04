@@ -1,3 +1,4 @@
+from Repositories.models import Movie
 from Repositories.movie_repository import MovieRepository
 from Services.movie_service import MovieService
 
@@ -7,6 +8,10 @@ class MovieController:
         self.repo = movie_repository
         self.service = movie_service
 
-    def get_data(self):
+    def get_data(self) -> list:
         movies = self.service.get_all_movies()
-        return {"filmy" : movies}
+        return movies
+
+    def get_recommended_movies(self) -> list:
+        movies = self.service.get_recommended_movies()
+        return movies

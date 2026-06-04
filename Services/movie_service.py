@@ -9,3 +9,6 @@ class MovieService:
     def get_all_movies(self) -> list[Movie]:
         movies = self.repo.get_movies()
         return movies
+
+    def get_recommended_movies(self) -> list[Movie]:
+        return list
