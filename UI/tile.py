@@ -1,6 +1,6 @@
 import os
 import customtkinter as ctk
-from Exceptions.Exceptions import ImageLoadException
+from Exceptions.exceptions import ImageLoadException
 from PIL import Image
 
 

@@ -1,6 +1,7 @@
-from Exceptions.Exceptions import ScoreOutOfRangeException
+from Exceptions.exceptions import ScoreOutOfRangeException
 from Repositories.models import Movie, User
 from Repositories.movie_repository import MovieRepository
+from Services.recommender import Recommender
 
 
 class Service:
@@ -12,8 +13,21 @@ class Service:
         movies = self.repo.get_movies()
         return movies
 
-    def get_recommended_movies(self) -> list[Movie]:
-        return []
+    def get_recommended_movies(self, count : int = 5 ) -> list[Movie]:
+        movies = self.get_all_movies()
+        recommender = Recommender(movies)
+
+        recommendations_generator = recommender.create_recommendations(self.user)
+
+        top = []
+        for i in range(count):
+            try:
+                top.append(next(recommendations_generator))
+            except StopIteration:
+                break
+        return top
+
+
 
     def password_check(self, login:str, password:str) -> User | None:
         user = self.repo.get_user_by_login(login, password)

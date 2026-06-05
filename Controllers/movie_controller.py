@@ -1,4 +1,4 @@
-from Exceptions.Exceptions import ScoreOutOfRangeException
+from Exceptions.exceptions import ScoreOutOfRangeException
 from Repositories.movie_repository import MovieRepository
 from Services.service import Service
 
