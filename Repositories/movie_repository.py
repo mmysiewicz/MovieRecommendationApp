@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from Repositories.models import Movie, Rate, User, Person, MoviePerson, Role
 from Services.decorators import transaction_check
 
@@ -11,7 +11,10 @@ class MovieRepository:
         return self.db.query(Movie).all()
 
     def get_rates (self) -> list[Rate]:
-        return self.db.query(Rate).all()
+        return self.db.query(Rate).options(
+            joinedload(Rate.Movie),
+            joinedload(Rate.User)
+        ).all()
 
     def get_user_by_login(self, login : str, password: str) -> User | None:
         return self.db.query(User).filter(User.Login == login, User.Password == password).first()

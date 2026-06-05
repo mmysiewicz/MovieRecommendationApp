@@ -44,5 +44,5 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except KeyboardInterrupt:
+    except Exception:
         print("Program został zamknięty.")

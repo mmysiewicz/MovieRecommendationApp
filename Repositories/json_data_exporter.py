@@ -1,4 +1,5 @@
 import json
+from collections import defaultdict
 
 from Repositories.models import Rate
 
@@ -7,7 +8,7 @@ class JsonDataExporter:
 
     @staticmethod
     def export_rates(rates : list[Rate], path : str):
-        data = {}
+        data = defaultdict(list)
 
         for rate in rates:
             title = rate.Movie.Title

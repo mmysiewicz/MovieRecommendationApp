@@ -97,6 +97,8 @@ class Tile(ctk.CTkFrame):
         except Exception as e:
             print(e)
 
+        self._clear_tile()
+
         try:
             self._display_image()
         except ImageLoadException as e:
