@@ -8,3 +8,25 @@ class MovieRepository:
 
     def get_movies (self) -> list[Movie]:
         return self.db.query(Movie).all()
+
+    def get_user_by_login(self, login : str, password: str) -> User | None:
+        return self.db.query(User).filter(User.Login == login, User.Password == password).first()
+
+    def insert_update_rate(self, movie_id : int , user_id:int , score:int):
+
+        exist_rate = self.db.query(Rate).filter(
+            Rate.Movie_Id==movie_id,
+            Rate.User_Id==user_id
+        ).first()
+
+        if exist_rate:
+            exist_rate.score = score
+        else:
+            rate = Rate(
+                Movie_Id=movie_id,
+                User_Id=user_id,
+                Score=score
+            )
+            self.db.add(rate)
+
+        self.db.commit()

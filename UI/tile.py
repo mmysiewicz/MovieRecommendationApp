@@ -6,14 +6,18 @@ from PIL import Image
 
 class Tile(ctk.CTkFrame):
     def __init__(self, master, movie, on_click):
-        super().__init__(master, width=200, height=300, cursor="hand2")
+        super().__init__(master, width=100, height=300, cursor="hand2",
+                         fg_color=("#EAEAEA", "#2B2B2B"))
         self.movie = movie
         self.on_click = on_click
 
         self.grid_propagate(False)
         self.pack_propagate(False)
 
-        self._render_image()
+        try:
+            self._render_image()
+        except ImageLoadException as e:
+            print(e)
 
         self._click_event()
 
@@ -30,12 +34,18 @@ class Tile(ctk.CTkFrame):
 
 
             except Exception as e:
+                self._render_text(self.movie.Title)
                 raise ImageLoadException(
-                    "Plik ma niepoprawny format lub jest uszkodzony",
-                    self.movie.Title,
-                    self.movie.poster_path)
+                   "Plik ma niepoprawny format lub jest uszkodzony",
+                   self.movie.Title,
+                   self.movie.poster_path)
+
         else:
             self._render_text(self.movie.Title)
+            raise ImageLoadException(
+                "Plik nie istnieje",
+                self.movie.Title,
+                self.movie.poster_path)
 
     def _render_text(self, text):
         self.widget = ctk.CTkLabel(self, text=text, font = ctk.CTkFont(family="Roboto", size=20))
