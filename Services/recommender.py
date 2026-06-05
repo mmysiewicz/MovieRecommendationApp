@@ -2,6 +2,7 @@ from cmath import sqrt
 from typing import Generator
 
 from Repositories.models import Movie, User
+from Services.decorators import timer
 
 
 class Recommender:
@@ -37,6 +38,7 @@ class Recommender:
 
         return vec
 
+    @timer
     def create_recommendations(self, user : User) -> Generator[Movie]:
         if not user.Rate or not self.all_movies:
             return []

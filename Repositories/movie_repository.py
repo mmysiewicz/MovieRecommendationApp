@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from Repositories.models import Movie, Rate, User, Person, MoviePerson, Role
+from Services.decorators import transaction_check
 
 
 class MovieRepository:
@@ -9,9 +10,13 @@ class MovieRepository:
     def get_movies (self) -> list[Movie]:
         return self.db.query(Movie).all()
 
+    def get_rates (self) -> list[Rate]:
+        return self.db.query(Rate).all()
+
     def get_user_by_login(self, login : str, password: str) -> User | None:
         return self.db.query(User).filter(User.Login == login, User.Password == password).first()
 
+    @transaction_check
     def insert_update_rate(self, movie_id : int , user_id:int , score:int):
 
         exist_rate = self.db.query(Rate).filter(
