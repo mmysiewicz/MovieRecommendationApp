@@ -16,7 +16,7 @@ class Service:
         return []
 
     def password_check(self, login:str, password:str) -> User | None:
-        user = self.repo.get_user_by_login(login)
+        user = self.repo.get_user_by_login(login, password)
         if user and user.Password == password:
             self.user = user
             return user
@@ -30,4 +30,7 @@ class Service:
         except Exception as e:
             print(e)
             self.repo.db.rollback()
+
+    def get_director_for_movie(self, movie_id: int) -> str:
+        return self.repo.get_director_for_movie(movie_id)
 

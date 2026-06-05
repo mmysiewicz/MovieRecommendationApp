@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from Repositories.models import Movie, Rate, User
+from Repositories.models import Movie, Rate, User, Person, MoviePerson, Role
 
 
 class MovieRepository:
@@ -30,3 +30,20 @@ class MovieRepository:
             self.db.add(rate)
 
         self.db.commit()
+
+    def get_director_for_movie(self, movie_id : int) -> str:
+
+        director = (self.db.query(Person.Firstname, Person.Surname)
+                    .join(MoviePerson, MoviePerson.Person_id == Person.Id)
+                    .join(Role, Role.Role_id == MoviePerson.Role_id)
+                    .filter(MoviePerson.Movie_Id==movie_id)
+                    .filter(Role.Name=="Reżyser")
+                    .first())
+
+        if director:
+            return f"{director.Firstname} {director.Surname}"
+        return ""
+
+
+
+

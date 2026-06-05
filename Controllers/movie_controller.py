@@ -21,3 +21,6 @@ class MovieController:
             self.service.rate_movie(movie_id, score)
         except ScoreOutOfRangeException as e:
             print(e)
+
+    def get_director(self, movie_id: int) -> str:
+        return self.service.get_director_for_movie(movie_id)
