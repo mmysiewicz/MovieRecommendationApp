@@ -1,4 +1,4 @@
-from cmath import sqrt
+from math import sqrt
 from typing import Generator
 
 from Repositories.models import Movie, User
