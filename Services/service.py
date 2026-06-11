@@ -28,6 +28,7 @@ class Service:
                 break
         return top
 
+
     def get_searched_movies(self, text : str) -> list[Movie]:
         all_movies = self.repo.get_movies()
 
