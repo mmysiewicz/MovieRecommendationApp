@@ -18,10 +18,18 @@ class MovieView(ctk.CTkToplevel):
         self.label = ctk.CTkLabel(self, text="Filmy", font=ctk.CTkFont(family="Roboto", size=20, weight="bold"))
         self.label.pack(pady=20)
 
+
+        self.search_frame = ctk.CTkFrame(self)
+        self.search_frame.pack(pady=5, padx=5)
+        self.search_entry = ctk.CTkEntry(self.search_frame, placeholder_text="Wyszukaj..." , font=ctk.CTkFont(family="Roboto", size=15))
+        self.search_entry.pack(side="left", pady=20, padx=20)
+
+        self.search_entry.bind("<KeyRelease>", self._on_key_release)
+
+
         self.scrollable_frame = ctk.CTkScrollableFrame(self, width=600, height=400)
         self.scrollable_frame.pack(pady=10, padx=20, fill="both", expand=True)
         self.scrollable_frame.grid_columnconfigure((0, 1, 2, 3), weight=1, pad=20)
-
 
         self.recommendation_label = ctk.CTkLabel(self, text="Rekomendowane", font=ctk.CTkFont(family="Roboto", size=20, weight="bold"))
         self.recommendation_label.pack(pady=20)
@@ -39,8 +47,14 @@ class MovieView(ctk.CTkToplevel):
             import traceback
             traceback.print_exc()
 
-    def display_movies(self):
-        movies = self.controller.get_data()
+    def display_movies(self, list_of_movies=None):
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
+
+        if list_of_movies is None:
+            movies = self.controller.get_data()
+        else:
+            movies = list_of_movies
 
         if movies is None:
             movies = []
@@ -89,3 +103,8 @@ class MovieView(ctk.CTkToplevel):
     def _handle_close(self):
         self.quit()
         self.destroy()
+
+    def _on_key_release(self, event=None):
+        text = self.search_entry.get()
+        movies = self.controller.get_searched_movies(text)
+        self.display_movies(movies)

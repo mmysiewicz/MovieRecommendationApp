@@ -12,6 +12,10 @@ class MovieController:
         movies = self.service.get_all_movies()
         return movies
 
+    def get_searched_movies(self, text:str) -> list:
+        movies = self.service.get_searched_movies(text)
+        return movies
+
     def get_recommended_movies(self) -> list:
         movies = self.service.get_recommended_movies()
         return movies
