@@ -78,6 +78,9 @@ class MovieView(ctk.CTkToplevel):
             tile.grid(row=row, column=col, padx=15, pady=15, sticky="nsew")
 
     def display_recommended_movies(self):
+        for widget in self.scrollable_bottom_frame.winfo_children():
+            widget.destroy()
+
         movies = self.controller.get_recommended_movies()
 
         if movies is None:
@@ -96,6 +99,7 @@ class MovieView(ctk.CTkToplevel):
         for movie in movies:
             tile = Tile(self.scrollable_bottom_frame, movie, self.controller, on_click=self.on_select_tile)
             tile.pack(side="left", padx=10, pady=5)
+
 
     def on_select_tile(self, movie : Movie):
         print(f"Kliknięto {movie.Title}")

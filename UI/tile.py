@@ -3,6 +3,7 @@ import customtkinter as ctk
 from Exceptions.exceptions import ImageLoadException
 from PIL import Image
 
+from UI import movie_view
 
 
 class Tile(ctk.CTkFrame):
@@ -103,6 +104,10 @@ class Tile(ctk.CTkFrame):
         try:
             self.controller.rate_movie(self.movie.Id, new_score)
             print("Dodano ocenę do bazy")
+
+            movie_view =self.winfo_toplevel()
+            movie_view.display_recommended_movies()
+
         except Exception as e:
             print(e)
 
