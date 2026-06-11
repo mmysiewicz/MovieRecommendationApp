@@ -2,7 +2,7 @@ from sqlalchemy.engine import URL
 from Repositories.connection import DatabaseManager
 from Repositories.json_data_exporter import JsonDataExporter
 from Repositories.models import Base, User
-from Repositories.movie_repository import MovieRepository
+from Repositories.repository import MovieRepository
 from Services.service import Service
 from Controllers.movie_controller import MovieController
 from Controllers.user_controller import UserController
@@ -44,5 +44,5 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except KeyboardInterrupt | Exception:
+    except KeyboardInterrupt:
         print("Program został zamknięty.")

@@ -6,10 +6,11 @@ from PIL import Image
 
 
 class Tile(ctk.CTkFrame):
-    def __init__(self, master, movie, on_click):
+    def __init__(self, master, movie, controller, on_click):
         super().__init__(master, width=100, height=300, cursor="hand2",
                          fg_color=("#EAEAEA", "#2B2B2B"))
         self.movie = movie
+        self.controller = controller
         self.on_click = on_click
         self.widgets =[]
 
@@ -64,10 +65,9 @@ class Tile(ctk.CTkFrame):
         title_label.pack(pady=10)
 
 
-        movie_view = self.winfo_toplevel()
         director = ""
         try:
-            director = movie_view.controller.get_director(self.movie.Id)
+            director = self.controller.get_director(self.movie.Id)
         except Exception as e:
             print(e)
 
@@ -91,9 +91,8 @@ class Tile(ctk.CTkFrame):
         if new_score not in range(1, 11):
             return
 
-        movie_view = self.winfo_toplevel()
         try:
-            movie_view.controller.rate_movie(self.movie.Id, new_score)
+            self.controller.rate_movie(self.movie.Id, new_score)
         except Exception as e:
             print(e)
 

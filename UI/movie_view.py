@@ -59,7 +59,7 @@ class MovieView(ctk.CTkToplevel):
             row = i//4
             col = i%4
 
-            tile = Tile(self.scrollable_frame, movie, on_click=self.on_select_tile)
+            tile = Tile(self.scrollable_frame, movie, self.controller, on_click=self.on_select_tile)
 
             tile.grid(row=row, column=col, padx=15, pady=15, sticky="nsew")
 
@@ -80,7 +80,7 @@ class MovieView(ctk.CTkToplevel):
 
 
         for movie in movies:
-            tile = Tile(self.scrollable_bottom_frame, movie, on_click=self.on_select_tile)
+            tile = Tile(self.scrollable_bottom_frame, movie, self.controller, on_click=self.on_select_tile)
             tile.pack(side="left", padx=10, pady=5)
 
     def on_select_tile(self, movie : Movie):

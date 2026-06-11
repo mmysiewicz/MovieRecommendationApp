@@ -1,6 +1,7 @@
+import re
 from Exceptions.exceptions import ScoreOutOfRangeException
 from Repositories.models import Movie, User
-from Repositories.movie_repository import MovieRepository
+from Repositories.repository import MovieRepository
 from Services.recommender import Recommender
 
 
@@ -27,7 +28,14 @@ class Service:
                 break
         return top
 
+    def get_searched_movies(self, text : str) -> list[Movie]:
+        all_movies = self.repo.get_movies()
 
+        if not text:
+            return all_movies
+        else:
+            searched_movies = [movie for movie in all_movies if re.search(text, movie.Title, re.IGNORECASE)]
+            return searched_movies
 
     def password_check(self, login:str, password:str) -> User | None:
         user = self.repo.get_user_by_login(login, password)

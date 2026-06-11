@@ -1,5 +1,5 @@
 from Repositories.models import User
-from Repositories.movie_repository import MovieRepository
+from Repositories.repository import MovieRepository
 from Services.service import Service
 
 

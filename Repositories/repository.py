@@ -43,9 +43,9 @@ class MovieRepository:
 
         director = (self.db.query(Person.Firstname, Person.Surname)
                     .join(MoviePerson, MoviePerson.Person_id == Person.Id)
-                    .join(Role, Role.Role_id == MoviePerson.Role_id)
+                    .join(Role, Role.Id == MoviePerson.Role_id)
                     .filter(MoviePerson.Movie_Id==movie_id)
-                    .filter(Role.Name=="Reżyser")
+                    .filter(Role.Name=="Director")
                     .first())
 
         if director:
