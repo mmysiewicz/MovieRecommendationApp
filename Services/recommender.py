@@ -46,6 +46,7 @@ class Recommender:
         user_rates = {rate.Movie_Id : rate.Score for rate in user.Rate}
         rated_movies = [movie for movie in self.all_movies if movie.Id in user_rates]
         not_rated_movies = [movie for movie in self.all_movies if movie.Id not in user_rates]
+
         if not not_rated_movies:
             return []
 

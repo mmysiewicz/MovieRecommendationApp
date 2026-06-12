@@ -14,8 +14,11 @@ CONNECTION_STRING = URL.create(
 
 
 def launch_app(movie_controller: MovieController, logged_user: User):
-    main_app = MovieView(movie_controller, user=logged_user)
-    main_app.mainloop()
+    try:
+        main_app = MovieView(movie_controller, user=logged_user)
+        main_app.mainloop()
+    except KeyboardInterrupt as e:
+        print(e)
 
 def main():
 

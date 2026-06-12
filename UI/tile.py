@@ -8,7 +8,7 @@ from UI import movie_view
 
 class Tile(ctk.CTkFrame):
     def __init__(self, master, movie, controller, on_click):
-        super().__init__(master, width=50, height=300, cursor="hand2",
+        super().__init__(master, width=200, height=300, cursor="hand2",
                          fg_color=("#EAEAEA", "#2B2B2B"))
         self.movie = movie
         self.controller = controller
